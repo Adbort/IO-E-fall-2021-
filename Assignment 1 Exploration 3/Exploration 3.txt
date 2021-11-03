@@ -1,0 +1,1 @@
+This exploration takes the volume from the sound sensor to generate a sound based on the loudness of the input

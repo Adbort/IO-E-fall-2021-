@@ -1,0 +1,1 @@
+This exploration takes the acceleration of the sensor and outputs an audiovisual representation from the data

@@ -1,0 +1,1 @@
+Particle system where particles stop if they get too close to a person

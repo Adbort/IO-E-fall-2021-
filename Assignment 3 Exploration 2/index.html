@@ -1,0 +1,166 @@
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.sound.min.js"></script>
+    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+
+    <script src="lib/p5.speech.js"></script>
+</head>
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+
+</style>
+
+<body>
+    <script>
+        let monkeys = [];
+        var myRec = new p5.SpeechRec('en-US', gotSpeech); // new P5.SpeechRec object
+        myRec.continuous = true; // do continuous recognition
+        //  myRec.interimResults = true; // allow partial recognition (faster, less accurate)
+        let words = ["silly", "monkey", "banana", "eat", "play", "dance", "chunky", "chimpanzee", "fun","stinky","little"];
+        let speech = "";
+        var x, y;
+        var dx, dy;
+        let monkey = true;
+        var phrase;
+        let result = "";
+        let showResult = false;
+        let MonkeyArray = [];
+
+        function preload() {
+            monkeys[0] = loadImage('images/monkey1.png');
+            monkeys[1] = loadImage('images/monkey2.png');
+            monkeys[2] = loadImage('images/monkey3.png');
+            monkeys[3] = loadImage('images/monkey4.png');
+            monkeys[4] = loadImage('images/monkey5.png');
+            monkeys[5] = loadImage('images/monkey6.png');
+
+        }
+
+        function setup() {
+            // graphics stuff:
+            createCanvas(windowWidth, windowHeight);
+            //  speech.toLowerCase();
+            // instructions:
+            background(255, 100, 100);
+            for (let i = 0; i < random(6); i++) {
+                let selectedWord = random(words);
+                speech = (speech + " " + selectedWord);
+
+            }
+
+
+
+            //   text("Say the name of some primates", 20, 20);
+
+
+            myRec.start(); // start engine
+        }
+
+        function draw() {
+            if (monkey == true) {
+                background(255, 100, 100);
+
+                textSize(30);
+                textAlign(CENTER);
+
+                for (let i = 0; i < MonkeyArray.length; i++) {
+                    MonkeyArray[i].move();
+                    MonkeyArray[i].show();
+
+                }
+                text(speech, width / 2, height / 2);
+
+                text(result, width / 2, height - 30);
+
+                //    text("you were the monkey the whole time",20,20)
+            }
+
+        }
+
+        function gotSpeech() {
+            result = myRec.resultString.toLowerCase();
+            if (" " + result == speech) {
+
+                speech = "";
+                for (let i = 0; i < random(6); i++) {
+                    let selectedWord = random(words);
+                    speech = (speech + " " + selectedWord);
+                }
+                MonkeyArray.push(new Monke());
+
+            }
+
+            showResult = true;
+        }
+
+        // recognition system will often append words into phrases.
+        // so hack here is to only use the last word:
+
+        
+        
+        class Monke {
+            constructor(shape) {
+                this.x = random(windowWidth);
+                this.y = random(windowHeight);
+
+                this.chosenmonkey = int(random(0,5));
+                this.xSpeed = random(-5, 5);
+                this.ySpeed = random(-5, 5);
+                this.near = false;
+
+
+
+
+            }
+            show() {
+
+
+                imageMode(CENTER);
+
+
+                image(monkeys[this.chosenmonkey], this.x, this.y);
+
+
+
+            }
+            move() {
+
+
+                this.x = this.x + this.xSpeed;
+                this.y = this.y + this.ySpeed;
+
+
+
+                // this.z = this.z + this.zpeed;
+
+
+                if (this.x < 0) {
+                    this.x = windowWidth;
+                }
+                if (this.x > windowWidth) {
+                    this.x = 0;
+                }
+                if (this.y < 0) {
+                    this.y = windowHeight;
+                }
+                if (this.y > windowHeight) {
+                    this.y = 0;
+                }
+
+            }
+
+        }
+
+    </script>
+
+
+
+</body>
+
+</html>
